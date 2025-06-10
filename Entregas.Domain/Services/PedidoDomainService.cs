@@ -25,21 +25,12 @@ namespace Entregas.Domain.Services
             {
                 #region Cadastro
 
-
-                if (pedido.Destinatario == null)
-                    throw new ArgumentException("Não é possível cadastrar um pedido sem destinatário.");
-
                 await _unitOfWork?.DestinatarioRepository.AddAsync(pedido.Destinatario);
 
                 // Ao cadastrar, salva como pendente
                 pedido.Status = StatusPedido.Pendente;
                 await _unitOfWork?.PedidoRepository.AddAsync(pedido);
 
-
-
-
-                if (pedido.Itens.Count == 0)
-                    throw new ArgumentException("Não é possível cadastrar um pedido sem itens.");
 
                 foreach (var item in pedido.Itens)
                 {

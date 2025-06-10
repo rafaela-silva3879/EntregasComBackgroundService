@@ -6,10 +6,10 @@ Esta API foi desenvolvida em .NET 7 e utiliza o padrão de arquitetura DDD (Doma
 
 A API também utiliza o Entity Framework Code First para o gerenciamento de banco de dados e o RabbitMQ como serviço de mensageria.
 
-🧩 Estrutura do Projeto
+## Estrutura do Projeto
 Este repositório contém dois projetos que se complementam:
 
-🔹 Entregas (API Principal)
+## Entregas (API Principal)
 
 Projeto ASP.NET Core RESTful responsável por expor os endpoints da aplicação.
 
@@ -21,7 +21,7 @@ Envia as entregas para uma fila no RabbitMQ para processamento assíncrono.
 
 TDD
 
-🔹 Entregas_WorkerService (Serviço em segundo plano)
+## Entregas_WorkerService (Serviço em segundo plano)
 Projeto Worker (BackgroundService) que consome a fila do RabbitMQ.
 
 Responsável por processar as entregas de forma assíncrona.

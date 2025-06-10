@@ -21,7 +21,7 @@ namespace Entregas.Infra.EventBus.Produccers
         {
             _messageBrokerSettings = messageBrokerSettings.Value;
         }
-        public async Task AddAsync(Entregas.Application.Events.PedidoPendenteEvent @event)
+        public async Task AddAsync(PedidoPendenteEvent @event)
         {
             var connectionFactory = new ConnectionFactory
             {

@@ -7,29 +7,32 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using System;
+using System.Net.Http;
+using Entregas.Tests; // importante se estiver em outro namespace
 
 namespace Entregas.Tests
 {
-    public class PedidosTest : IClassFixture<WebApplicationFactory<Program>>
+    public class PedidosTest : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly HttpClient _client;
 
-        public PedidosTest(WebApplicationFactory<Program> factory)
+        public PedidosTest(CustomWebApplicationFactory factory)
         {
             _client = factory.CreateClient();
         }
 
-        private StringContent CriarContent(PedidoCreateCommand command)
+        private static StringContent CriarContent(PedidoCreateCommand command)
         {
             var json = JsonConvert.SerializeObject(command);
             return new StringContent(json, Encoding.UTF8, "application/json");
         }
 
-        private PedidoCreateCommand CriarPedidoValido()
+        private static PedidoCreateCommand CriarPedidoValido()
         {
             return new PedidoCreateCommand
             {
-                PedidoId = Guid.NewGuid().ToString(), // Garante um valor único
+                PedidoId = Guid.NewGuid().ToString(),
                 Destinatario = new DestinatarioCreateCommand
                 {
                     Nome = "João da Silva",
@@ -37,10 +40,10 @@ namespace Entregas.Tests
                     CEP = "01010-000"
                 },
                 Itens = new List<ItemCreateCommand>
-        {
-            new ItemCreateCommand { Descricao = "Geladeira", Quantidade = 1 },
-            new ItemCreateCommand { Descricao = "Fogão", Quantidade = 1 }
-        }
+                {
+                    new ItemCreateCommand { Descricao = "Geladeira", Quantidade = 1 },
+                    new ItemCreateCommand { Descricao = "Fogão", Quantidade = 1 }
+                }
             };
         }
 
@@ -98,15 +101,11 @@ namespace Entregas.Tests
         [Fact]
         public async Task Get_DeveRetornarOk_QuandoStatusValido()
         {
-            // Arrange
             var status = "Pendente";
 
-            // Act
             var response = await _client.GetAsync($"/api/pedidos/status/{status}");
 
-            // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-
             var body = await response.Content.ReadAsStringAsync();
             body.Should().Contain("success");
             body.Should().Contain("pedidos");
@@ -115,19 +114,14 @@ namespace Entregas.Tests
         [Fact]
         public async Task Get_DeveRetornarBadRequest_QuandoStatusInvalido()
         {
-            // Arrange
             var status = "StatusInexistente";
 
-            // Act
             var response = await _client.GetAsync($"/api/pedidos/status/{status}");
 
-            // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-
             var body = await response.Content.ReadAsStringAsync();
             body.Should().Contain("Status inválido");
             body.Should().Contain("error");
         }
-
     }
 }
