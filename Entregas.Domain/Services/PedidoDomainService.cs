@@ -59,7 +59,8 @@ namespace Entregas.Domain.Services
 
                 bool converteu = Enum.TryParse(status, true, out statusConvertido);
 
-                if (!converteu || statusConvertido > StatusPedido.FalhaNaEntrega)
+                //se não converteu ou se não está definido no enum
+                if (!converteu || !Enum.IsDefined(typeof(StatusPedido), statusConvertido))
                     throw new ArgumentException("Status inválido.");
 
                 var lista = new List<Pedido>();
