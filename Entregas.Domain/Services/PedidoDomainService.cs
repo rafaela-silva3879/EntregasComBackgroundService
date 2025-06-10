@@ -59,10 +59,9 @@ namespace Entregas.Domain.Services
 
                 bool converteu = Enum.TryParse(status, true, out statusConvertido);
 
-                if (!converteu)
+                if (!converteu || statusConvertido > StatusPedido.FalhaNaEntrega)
                     throw new ArgumentException("Status inválido.");
 
-                //cannot assign void to an emplicitply-typed variable
                 var lista = new List<Pedido>();
                 lista = await _unitOfWork.PedidoRepository.ConsultarStatusAsync(statusConvertido);
 
