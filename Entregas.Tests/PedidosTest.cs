@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Xunit;
 using System;
 using System.Net.Http;
-using Entregas.Tests; // importante se estiver em outro namespace
+using Entregas.Tests; 
 
 namespace Entregas.Tests
 {
@@ -60,10 +60,10 @@ namespace Entregas.Tests
         }
 
         [Fact]
-        public async Task Post_DeveRetornarBadRequest_QuandoPedidoIdForNulo()
+        public async Task Post_DeveRetornarBadRequest_QuandoPedidoIdForVazio()
         {
             var pedido = CriarPedidoValido();
-            pedido.PedidoId = null;
+            pedido.PedidoId = "";
 
             var response = await _client.PostAsync("/api/pedidos", CriarContent(pedido));
 
